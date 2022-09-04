@@ -29,6 +29,15 @@ module.exports = {
             test: /\.(css|scss)$/,
             use: ['style-loader', MiniCssExtractPlugin.loader, 'css-loader']
         },
+        {
+            test: /\.csv$/,
+            loader: 'csv-loader',
+            options: {
+              dynamicTyping: true,
+              header: true,
+              skipEmptyLines: true
+            }
+          },
         { test: /\.(png|woff|woff2|eot|ttf|svg)$/, loader: 'url-loader?limit=10000' }
         ]
     },
