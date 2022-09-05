@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
@@ -8,14 +8,68 @@ const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design<
 const mapCenter = [47.36667, 8.55];
 const zoomLevel = 13.;
 const buildingTypeList = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
+const maxPrice = [1000, 2000, 3000, 4000, 5000]
+const filters = {
+    buildingType: '',
+    price: null,
+    parking: ''
+  }
+ 
+//   Object.keys(obj).forEach((key, index) => {
+//     obj[key] = obj[key] + index;
+//   });
 
-function PropertiesMap() {
+export default function PropertiesMap() {
+  const [properties, setProperties] = useState(Properties);
+  const [filteredProperties, setFilteredProperties] = useState([]);
   const [chosenType, setType] = useState("default");
+  const [isChecked, setIsChecked] = useState(false);
+  const [price, setPrice] = useState("default");
+ 
+  
 
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0)
+  }, []);
+
+console.log(filters)
 
   const handleInputChange = (event) => {
-    setType(event.target.value); 
+    setType(event.target.value);
+    //let filtered = false;
+    // if (filteredProperties.length !== 0) {
+    //    setFilteredProperties(filteredProperties.filter(p => p.BuildingType === event.target.value))
+    //  } else {}
+    //setFilteredProperties(properties.filter(p => p.BuildingType === event.target.value))
+    filters.buildingType = event.target.value;
+}
+
+  const handleMaxPriceChange = (event) => {
+    setPrice(event.target.value);
+    //setFilteredProperties(filteredProperties.filter(p => p['Price/m^2'] <= event.target.value))
+    filters.price = event.target.value;
   };
+
+  const handleCheckboxChange = () => {
+    if (isChecked === true) {
+        setIsChecked(false)
+        filters.parking = "x";
+    } else {
+        setIsChecked(true)
+        filters.parking = "";
+    };
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
+   // if (chosenType !== "default" && price !== "default" && isChecked === true) {
+        let filteredProperties = properties.filter(p =>
+            p.BuildingType === filters.buildingType
+            && p['Price/m^2'] < filters.price
+            && p.Parking === filters.parking)
+        setProperties(filteredProperties)
+    
+  }
     
     // https://github.com/pointhi/leaflet-color-markers
     let blueMarker = new L.icon({
@@ -29,13 +83,15 @@ function PropertiesMap() {
 
     return (
       <div className='PropertiesMap'>
+
+        {/* Filters */}
+
         <div>
           <form 
-          //</div>onSubmit={handleSubmit}
+           onSubmit={handleSubmit}
           >
             <div className="">
               <select
-                require="true"
                 className=""
                 id="select_type"
                 onChange={(e) => handleInputChange(e)}
@@ -50,7 +106,7 @@ function PropertiesMap() {
                 </option>
                 
                 {
-              buildingTypeList.map((t) => (
+                buildingTypeList.map((t) => (
                 <option
                   key={t}
                   className=""
@@ -60,23 +116,78 @@ function PropertiesMap() {
                 </option>
               ))}
               </select>
+             
+              
+              
+              <select
+                className=""
+                id="max_price"
+                onChange={(e) => handleMaxPriceChange(e)}
+                value={price}
+              >
+                <option
+                  className="default"
+                  disabled
+                  value={'default'}
+                >
+                -- Max price in EUR/square meter  --
+                </option>
+                
+                {
+                maxPrice.map((m) => (
+                <option
+                  key={m}
+                  className=""
+                  value={m}
+                >
+                  {m}
+                </option>
+              ))}
+              </select>
+
+              {/* <label htmlFor="price">Price</label>
+              <input 
+                type="input"
+                id="price"
+                name="price"
+                // onInput={ handleInput } 
+                onChange={(e) => handleRangeChange(e)}
+                value="25000"
+                min="730" max="4650"
+                step="1"
+              /> */}
+             
+             
+             <label htmlFor="parking">Parking</label>
+              <input
+                type="checkbox"
+                id="parking"
+                name="parking"
+                checked={isChecked}
+                onChange={(e) => handleCheckboxChange(e)}
+                className=""
+              />
 
           <button
             type="submit"
-            //disabled = {chosenType === "default" ? true : false}
+            disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
             className=""
           >
             Filter
           </button>
+
           <button
-            //onClick={resetFilteredOffersCb}
+            //onClick={resetFilters}
             className=""
             type="button"
+            disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
           >
             Reset
           </button>
         </div>
       </form>
+
+      {/* Map */}
       </div>
             <div>
                 <Map
@@ -87,8 +198,8 @@ function PropertiesMap() {
                     attribution={stamenTonerAttr}
                     url={mapUrl}
                 />
-                 {
-         Properties.map(p => (
+                 {/* { filteredProperties.length !== 0 ?
+         filteredProperties.map(p => (
                     <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
                         <Popup className="PopUp">
                             <p>Price: €{p['Price/m^2']}/m&#178;</p>
@@ -98,12 +209,21 @@ function PropertiesMap() {
                         </Popup>
                     </Marker>
                 ))
+            : */}
+            { properties.map(p => (
+                <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
+                    <Popup className="PopUp">
+                        <p>Price: €{p['Price/m^2']}/m&#178;</p>
+                        <p>Building Type: {p.BuildingType}</p>
+                        <p>Parking: {p.Parking === "x"? "YES" : "NO"}</p>
+                        
+                    </Popup>
+                </Marker>
+            ))
+            
             }
                 </Map>
             </div>
     </div>
     );
-  
 };
-
-export default PropertiesMap;
