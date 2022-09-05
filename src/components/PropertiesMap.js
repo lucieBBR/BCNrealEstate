@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
@@ -7,43 +7,79 @@ const mapUrl = 'https://api.mapbox.com/styles/v1/luciebbr/cl7gjuddn001i15p8mip0g
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
 const mapCenter = [47.36667, 8.55];
 const zoomLevel = 13.;
+const buildingTypeList = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
 
-class PropertiesMap extends Component {
-    state = { currentZoomLevel: zoomLevel };
-
-
-    componentDidMount() {
-        const leafletMap = this.leafletMap.leafletElement;
-        leafletMap.on('zoomend', () => {
-            const updatedZoomLevel = leafletMap.getZoom();
-            this.handleZoomLevelChange(updatedZoomLevel);
-        });
-    }
-
-    handleZoomLevelChange(newZoomLevel) {
-        this.setState({ currentZoomLevel: newZoomLevel });
-    }
+function PropertiesMap() {
+  const [chosenType, setType] = useState("default");
 
 
-    render() {
-        window.console.log('this.state.currentZoomLevel ->',
-        this.state.currentZoomLevel);
-
-
-        // https://github.com/pointhi/leaflet-color-markers
-        let blueMarker = new L.icon({
-        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
-        iconSize: [25, 41],
-        iconAnchor: [12, 41],
-        nameAnchor: [1, -34],
-        shadowSize: [41, 41]
+  const handleInputChange = (event) => {
+    setType(event.target.value); 
+  };
+    
+    // https://github.com/pointhi/leaflet-color-markers
+    let blueMarker = new L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+    shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    nameAnchor: [1, -34],
+    shadowSize: [41, 41]
     });
 
-        return (
+    return (
+      <div className='PropertiesMap'>
+        <div>
+          <form 
+          //</div>onSubmit={handleSubmit}
+          >
+            <div className="">
+              <select
+                require="true"
+                className=""
+                id="select_type"
+                onChange={(e) => handleInputChange(e)}
+                value={chosenType}
+              >
+                <option
+                  className="default"
+                  disabled
+                  value={'default'}
+                >
+                -- Choose a building type --
+                </option>
+                
+                {
+              buildingTypeList.map((t) => (
+                <option
+                  key={t}
+                  className=""
+                  value={t}
+                >
+                  {t}
+                </option>
+              ))}
+              </select>
+
+          <button
+            type="submit"
+            //disabled = {chosenType === "default" ? true : false}
+            className=""
+          >
+            Filter
+          </button>
+          <button
+            //onClick={resetFilteredOffersCb}
+            className=""
+            type="button"
+          >
+            Reset
+          </button>
+        </div>
+      </form>
+      </div>
             <div>
                 <Map
-                    ref={m => { this.leafletMap = m; }}
                     center={mapCenter}
                     zoom={zoomLevel}
                 >
@@ -65,8 +101,9 @@ class PropertiesMap extends Component {
             }
                 </Map>
             </div>
-        );
-    }
+    </div>
+    );
+  
 };
 
 export default PropertiesMap;
