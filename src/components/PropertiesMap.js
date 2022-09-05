@@ -55,8 +55,10 @@ class PropertiesMap extends Component {
          Properties.map(p => (
                     <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
                         <Popup className="PopUp">
-                            {p.BuildingType}
-                            {p['Price/m^2']}
+                            <p>Price: €{p['Price/m^2']}/m&#178;</p>
+                            <p>Building Type: {p.BuildingType}</p>
+                            <p>Parking: {p.Parking === "x"? "YES" : "NO"}</p>
+                            
                         </Popup>
                     </Marker>
                 ))
