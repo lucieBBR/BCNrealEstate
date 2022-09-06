@@ -5,8 +5,8 @@ import Properties from '../properties.csv'
 
 const mapUrl = 'https://api.mapbox.com/styles/v1/luciebbr/cl7gjuddn001i15p8mip0g9hd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjaWViYnIiLCJhIjoiY2w3Z2pveHB4MDVieTNubzBnYnFmaWlsOSJ9.3lJjKxP4RT-q_Ush43Vf_g';
 const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-const mapCenter = [47.36667, 8.55];
-const zoomLevel = 13.;
+const mapCenter = [47.3715, 8.5423];
+const zoomLevel = 12;
 const buildingTypeList = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
 const maxPrice = [1000, 2000, 3000, 4000, 5000]
 const filters = {
@@ -14,13 +14,13 @@ const filters = {
     price: null,
     parking: ''
   }
- 
-//   Object.keys(obj).forEach((key, index) => {
-//     obj[key] = obj[key] + index;
+const newProperties = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
+
+//const newProperties = Properties.map((item) => {item.Parking === "x" ? Parking = true : Parking = false
 //   });
 
 export default function PropertiesMap() {
-  const [properties, setProperties] = useState(Properties);
+  const [properties, setProperties] = useState(newProperties);
   const [filteredProperties, setFilteredProperties] = useState([]);
   const [chosenType, setType] = useState("default");
   const [isChecked, setIsChecked] = useState(false);
@@ -33,6 +33,7 @@ export default function PropertiesMap() {
   }, []);
 
 console.log(filters)
+console.log(properties)
 
   const handleInputChange = (event) => {
     setType(event.target.value);
@@ -53,10 +54,10 @@ console.log(filters)
   const handleCheckboxChange = () => {
     if (isChecked === true) {
         setIsChecked(false)
-        filters.parking = "x";
+        filters.parking = "";
     } else {
         setIsChecked(true)
-        filters.parking = "";
+        filters.parking = "x";
     };
   }
 
@@ -69,6 +70,13 @@ console.log(filters)
             && p.Parking === filters.parking)
         setProperties(filteredProperties)
     
+  }
+
+  const resetFilters = (event) => {
+    setProperties(newProperties)
+    setType("default")
+    setPrice("default")
+    setIsChecked(false)
   }
     
     // https://github.com/pointhi/leaflet-color-markers
@@ -88,11 +96,12 @@ console.log(filters)
 
         <div>
           <form 
-           onSubmit={handleSubmit}
+          onSubmit={handleSubmit}
           >
             <div className="">
               <select
                 className=""
+                required="true"
                 id="select_type"
                 onChange={(e) => handleInputChange(e)}
                 value={chosenType}
@@ -121,6 +130,7 @@ console.log(filters)
               
               <select
                 className=""
+                required="true"
                 id="max_price"
                 onChange={(e) => handleMaxPriceChange(e)}
                 value={price}
@@ -177,7 +187,7 @@ console.log(filters)
           </button>
 
           <button
-            //onClick={resetFilters}
+            onClick={resetFilters}
             className=""
             type="button"
             disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
@@ -211,7 +221,7 @@ console.log(filters)
                 ))
             : */}
             { properties.map(p => (
-                <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
+                <Marker key={p.id} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
                     <Popup className="PopUp">
                         <p>Price: €{p['Price/m^2']}/m&#178;</p>
                         <p>Building Type: {p.BuildingType}</p>
