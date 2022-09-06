@@ -3,10 +3,7 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
 
-const mapUrl = 'https://api.mapbox.com/styles/v1/luciebbr/cl7gjuddn001i15p8mip0g9hd/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjaWViYnIiLCJhIjoiY2w3Z2pveHB4MDVieTNubzBnYnFmaWlsOSJ9.3lJjKxP4RT-q_Ush43Vf_g';
-const stamenTonerAttr = 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>';
-const mapCenter = [47.3715, 8.5423];
-const zoomLevel = 12;
+const newProperties = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
 const buildingTypeList = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
 const maxPrice = [1000, 2000, 3000, 4000, 5000]
 const filters = {
@@ -14,10 +11,6 @@ const filters = {
     price: null,
     parking: ''
   }
-const newProperties = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
-
-//const newProperties = Properties.map((item) => {item.Parking === "x" ? Parking = true : Parking = false
-//   });
 
 export default function PropertiesMap() {
   const [properties, setProperties] = useState(newProperties);
@@ -26,15 +19,11 @@ export default function PropertiesMap() {
   const [isChecked, setIsChecked] = useState(false);
   const [price, setPrice] = useState("default");
  
-  
-
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, []);
 
-console.log(filters)
-console.log(properties)
-
+  // handle dropdown menu selection for type of property
   const handleInputChange = (event) => {
     setType(event.target.value);
     //let filtered = false;
@@ -44,13 +33,14 @@ console.log(properties)
     //setFilteredProperties(properties.filter(p => p.BuildingType === event.target.value))
     filters.buildingType = event.target.value;
 }
-
+  // handle dropdown menu selection for max property price
   const handleMaxPriceChange = (event) => {
     setPrice(event.target.value);
     //setFilteredProperties(filteredProperties.filter(p => p['Price/m^2'] <= event.target.value))
     filters.price = event.target.value;
   };
 
+  // handle checkbox changes when Parking checked/unchecked
   const handleCheckboxChange = () => {
     if (isChecked === true) {
         setIsChecked(false)
@@ -61,6 +51,7 @@ console.log(properties)
     };
   }
 
+  // Submit filters and reset the properties, so the markers would change based on the filters
   const handleSubmit = (event) => {
     event.preventDefault()
    // if (chosenType !== "default" && price !== "default" && isChecked === true) {
@@ -72,6 +63,7 @@ console.log(properties)
     
   }
 
+  // Reset filters
   const resetFilters = (event) => {
     setProperties(newProperties)
     setType("default")
@@ -90,18 +82,21 @@ console.log(properties)
     });
 
     return (
-      <div className='PropertiesMap'>
+      <div className="MapWithFilters">
 
         {/* Filters */}
-
-        <div>
-          <form 
-          onSubmit={handleSubmit}
-          >
-            <div className="">
+        <div className="LeftColumn">
+          <div className="Headings">
+            <h2>Find the ideal property in</h2>
+            <h3>ZURICH</h3>
+          </div>
+          
+          <form className="FiltersForm" onSubmit={handleSubmit}>
+              <h4>Lets have a look...</h4>
+              {/* Select building type  - dropdown menu  */}
+              <label htmlFor="select_type">What type of property are you looking for?</label>
               <select
-                className=""
-                required="true"
+                required={true}
                 id="select_type"
                 onChange={(e) => handleInputChange(e)}
                 value={chosenType}
@@ -110,27 +105,24 @@ console.log(properties)
                   className="default"
                   disabled
                   value={'default'}
-                >
-                -- Choose a building type --
+                >-- Choose a building type --
                 </option>
                 
-                {
-                buildingTypeList.map((t) => (
+                {buildingTypeList.map((t) => (
                 <option
                   key={t}
                   className=""
                   value={t}
-                >
-                  {t}
+                >{t}
                 </option>
-              ))}
+                ))}
               </select>
              
-              
-              
+             {/* Select max price - dropdown menu  */}
+              <label htmlFor="selemax_price">What is the maximum price you want to pay? (in €/m&#178;)</label>
               <select
                 className=""
-                required="true"
+                required={true}
                 id="max_price"
                 onChange={(e) => handleMaxPriceChange(e)}
                 value={price}
@@ -140,11 +132,10 @@ console.log(properties)
                   disabled
                   value={'default'}
                 >
-                -- Max price in EUR/square meter  --
+                -- Max price in EUR per square meter  --
                 </option>
                 
-                {
-                maxPrice.map((m) => (
+                {maxPrice.map((m) => (
                 <option
                   key={m}
                   className=""
@@ -167,49 +158,51 @@ console.log(properties)
                 step="1"
               /> */}
              
-             
-             <label htmlFor="parking">Parking</label>
+             {/* Parking option - Checkbox */}
+             <label htmlFor="parking">Do you need a parking?</label>
               <input
                 type="checkbox"
                 id="parking"
                 name="parking"
                 checked={isChecked}
                 onChange={(e) => handleCheckboxChange(e)}
-                className=""
               />
 
-          <button
-            type="submit"
-            disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
-            className=""
-          >
-            Filter
-          </button>
+             {/* Filter and Reset buttons to submit or reset filters */}
+              <button
+                type="submit"
+                disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
+                >Filter
+              </button>
 
-          <button
-            onClick={resetFilters}
-            className=""
-            type="button"
-            disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
-          >
-            Reset
-          </button>
+              <button
+                onClick={resetFilters}
+                type="button"
+                disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
+                >Reset
+              </button>
+           </form>
         </div>
-      </form>
-
+      
+      
       {/* Map */}
-      </div>
-            <div>
-                <Map
-                    center={mapCenter}
-                    zoom={zoomLevel}
-                >
-                <TileLayer
-                    attribution={stamenTonerAttr}
-                    url={mapUrl}
-                />
-                 {/* { filteredProperties.length !== 0 ?
-         filteredProperties.map(p => (
+     
+        <div className='Map'>
+            {/* Show Map at coordinates: center and with given zoom */}
+            <Map
+              center={[47.3715, 8.5423]}
+              zoom={13}
+            >
+            
+            {/* Display the tiles */}
+            <TileLayer
+                attribution={'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
+                url={'https://api.mapbox.com/styles/v1/luciebbr/cl7qjsagm002y15oba7393t3q/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjaWViYnIiLCJhIjoiY2w3Z2pveHB4MDVieTNubzBnYnFmaWlsOSJ9.3lJjKxP4RT-q_Ush43Vf_g'}
+            />
+
+
+              {/* { filteredProperties.length !== 0 ?
+              filteredProperties.map(p => (
                     <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
                         <Popup className="PopUp">
                             <p>Price: €{p['Price/m^2']}/m&#178;</p>
@@ -220,8 +213,10 @@ console.log(properties)
                     </Marker>
                 ))
             : */}
+
+            {/* Map through properties and display markers on given coordinates */}
             { properties.map(p => (
-                <Marker key={p.id} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
+            <Marker key={p.id} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
                     <Popup className="PopUp">
                         <p>Price: €{p['Price/m^2']}/m&#178;</p>
                         <p>Building Type: {p.BuildingType}</p>
@@ -232,8 +227,8 @@ console.log(properties)
             ))
             
             }
-                </Map>
-            </div>
+            </Map>
+         </div>
     </div>
-    );
+  );
 };

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 
 import PropertiesMap from './components/PropertiesMap';
+import Navbar from './components/Navbar';
 
 class App extends Component {
     render() { 
         return (
             <React.Fragment>
-                <div> Properties App</div>
+                <Navbar />
                 <PropertiesMap />
             </React.Fragment>
         );

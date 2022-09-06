@@ -1,4 +1,187 @@
+/* Initial Reset */
+*{
+    margin: 0;
+    font-family: 'Avenir', sans-serif;
+  }
+
+/* Navbar settings */
+
+.Navbar {
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+}
+
+.Navbar h1 {
+    padding: 10px;
+    float: left;
+}
+
+.Navbar div {
+    float: right;
+    font-size: 18px;
+    justify-content: space-between;
+}
+
+.switchLang {
+    margin-left: 4rem;
+    padding: 5px 7px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.612);
+    background-color: rgb(255, 174, 0);
+    border: 0px;
+    border-radius: 7px;
+
+}
+
+/* Code for links styling thanks to: https://css-tricks.com/css-link-hover-effects/ */
+.Navbar  a {
+    background-image: linear-gradient(
+      to right,
+      #1b87fb,
+      #1b87fb 50%,
+      #000 50%
+    );
+    margin-left: 3rem;
+    background-size: 200% 100%;
+    background-position: -100%;
+    display: inline-block;
+    padding: 5px 0;
+    position: relative;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .Navbar a:before {
+    content: '';
+    background: #1b87fb;
+    display: block;
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    width: 0;
+    height: 3px;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .Navbar a:hover {
+   background-position: 0;
+  }
+  
+  .Navbar a:hover::before {
+    width:100%;
+  }
+
+/* Map Container Settings */
+
+.MapWithFilters {
+    margin-top: 40px;
+    padding-top: 1rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    grid-auto-rows: 520px;
+    justify-content: center;
+    background-color: #788da421;
+    /* background-color: rgba(251, 210, 132, 0.662); */
+}
+
+/* Filters */
+.LeftColumn {
+    padding: 20px;
+    grid-column-start: 0;
+    grid-column-end: 2;
+    margin-left: 20px;
+}
+
+.LeftColumn .Headings {
+    /* font-size: 24px; */
+    display: inline-flex
+}
+
+.LeftColumn .Headings h2 {
+    /* padding-right: 30px; */
+    font-size: 22px;
+}
+
+.LeftColumn .Headings h3 {
+    font-weight: bold;
+    color: #1b87fb;
+    font-size: 26px;
+    margin: 0px 0px 15px 15px;
+}
+
+
+.FiltersForm{
+    margin-top: 20px;
+    font-size: 16px;
+    padding: 2rem 0rem 2rem 2rem;
+    display: block;
+    /* background-color: rgba(207, 207, 212, 0.466); */
+    background-color: rgba(249, 211, 146, 0.432);
+    border: 0px;
+    border-radius: 15px;
+}
+
+.FiltersForm h4 {
+    color:#1b87fb;
+    font-size: 18px;
+    margin: 0px 0px 15px 0px;
+}
+
+.FiltersForm label {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 1rem 1rem 1rem 0rem;
+}
+
+.FiltersForm select {
+    display: block;
+    width: 90%;
+    font-size: 14px;
+    padding: 0.5rem;
+    border: 1px solid #1b87fb;
+    border-radius: 5px;
+}
+
+.FiltersForm input[type=checkbox] {
+    transform: scale(1.5);
+    border: 1px solid #1b87fb;
+    border-radius: 5px;
+    width: 30%;
+}
+
+.FiltersForm button {
+    /* display: */
+    padding: 7px 15px;
+    font-size: 18px;
+    font-weight: 500;
+    width: 30%;
+    margin: 5px 15px 0px 20px;
+    color: #000;
+    background-color: rgba(255, 174, 0, 0.863);
+    border: 0px;
+    border-radius: 10px;
+}
+
+.FiltersForm button:hover {
+    background-color:#1b87fb;
+    padding: 10px 18px;
+}
+
+.FiltersForm button:disabled:hover {
+    cursor: not-allowed;
+}
+
+/* Map */
+.Map{
+    padding: 30px;
+    grid-column-start: 2;
+    grid-column-end: 4;
+}
+
 .leaflet-container {
-    height: 600px;
-    width:80%;
+    height: 450px;
+    width:100%;
 }
