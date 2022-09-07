@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
@@ -14,7 +14,6 @@ const INIT_FILTERS = {
 
 export default function PropertiesMap() {
   const [properties, setProperties] = useState(NEW_PROPERTIES);
-  const [filteredProperties, setFilteredProperties] = useState([]);
   const [filters, setFilters] = useState(INIT_FILTERS)
   const [chosenType, setType] = useState("default");
   const [isChecked, setIsChecked] = useState(false);
@@ -23,9 +22,6 @@ export default function PropertiesMap() {
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, []);
-
-  console.log(properties)
-  console.log(filters)
 
   // handle dropdown menu selection for type of property
   const handleInputChange = (event) => {
@@ -90,7 +86,7 @@ export default function PropertiesMap() {
     setIsChecked(false)
   }
     
-    // https://github.com/pointhi/leaflet-color-markers
+    //insert marker style from Github https://github.com/pointhi/leaflet-color-markers
     let blueMarker = new L.icon({
     iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
     shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
@@ -101,7 +97,7 @@ export default function PropertiesMap() {
     });
 
     return (
-      <div className="MapWithFilters">
+      <div id="mapSection" className="MapWithFilters">
 
         {/* Filters */}
         <div className="LeftColumn">
@@ -174,6 +170,7 @@ export default function PropertiesMap() {
               />
 
              {/* Filter and Reset buttons to submit or reset filters */}
+             <div className='buttons'>
               <button
                 type="submit"
                 id="submitButton"
@@ -186,6 +183,7 @@ export default function PropertiesMap() {
                 id="resetButton"
                 >Reset
               </button>
+             </div>
            </form>
         </div>
       

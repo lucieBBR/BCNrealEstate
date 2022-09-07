@@ -16,14 +16,16 @@ function Navbar() {
       
       {isEng === true?
       <div className="eng">
-        <a href="">HOME</a>
+        <a href="#heroSection">HOME</a>
+        <a href="#mapSection">PROPERTIES</a>
         <a href="">ABOUT US</a>
         <a href="">CONTACT</a>
         <button className="switchLang" onClick={changeLanguage}>DE</button>
       </div>
     :
       <div className="de">
-        <a href="">HOME</a>
+        <a href="#heroSection">HOME</a>
+        <a href="#mapSection">IMMOBILIEN</a>
         <a href="">ÜBER UNS</a>
         <a href="">KONTAKT</a>
         <button className="switchLang" onClick={changeLanguage}>ENG</button>

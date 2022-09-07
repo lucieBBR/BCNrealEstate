@@ -4,20 +4,23 @@
     font-family: 'Avenir', sans-serif;
   }
 
+html {
+    scroll-behavior: smooth;
+  }
+
 /* Navbar settings */
 .Navbar {
     background-color: rgb(255, 255, 255);
     padding: 20px 30px 10px 20px;
+    overflow: hidden;
+    position: sticky; 
+    z-index: 1;
+    top: 0
 }
 
 .Navbar img {
     height: 25%;
     width: 25%;
-}
-
-.Navbar h1 {
-    padding: 10px;
-    float: left;
 }
 
 .Navbar div {
@@ -82,15 +85,42 @@
     width:100%;
   }
 
-/* Map Container with Filters Settings */
+/* Hero/Home Settings */
+/* Background image thanks to Unsplash - Henrique Ferreira */
+.Hero {
+    height: 650px;
+    text-align: center;
+    background-size: contain;
+    background: linear-gradient(rgba(78, 77, 162, 0.72), rgba(84, 85, 104, 0.655)), url('https://images.unsplash.com/photo-1599082323832-2676eca28e86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80');
+}
 
+h1 {
+    font-size: 44px;
+    color: white;
+    text-align: center;
+    padding-top: 200px;
+}
+
+.Hero #discover {
+    padding: 30px 50px;
+    font-size: 22px;
+    font-weight: 400;
+    margin-top: 40px;
+    color: white;
+    background-color: rgba(255, 174, 0, 0.863);
+    border: 0px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Map Container with Filters Settings */
 .MapWithFilters {
     margin-top: 0px;
-    padding-top: 1rem;
+    padding-top: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    grid-auto-rows: 520px;
+    grid-auto-rows: 600px;
     justify-content: center;
     background-color: #788da421;
 }
@@ -120,13 +150,11 @@
     margin: 0px 0px 15px 15px;
 }
 
-
 .FiltersForm{
     margin-top: 20px;
     font-size: 16px;
     padding: 2rem 0rem 2rem 2rem;
     display: block;
-    /* background-color: rgba(207, 207, 212, 0.466); */
     background-color: rgba(249, 211, 146, 0.432);
     border: 0px;
     border-radius: 15px;
@@ -164,7 +192,6 @@
 }
 
 .FiltersForm button {
-    /* display: */
     padding: 7px 15px;
     font-size: 18px;
     font-weight: 500;
@@ -192,4 +219,22 @@
 .leaflet-container {
     height: 450px;
     width:100%;
+    position: sticky;
+}
+
+
+/* Footer */
+
+.footer {
+    width: 100%;
+    background-color: rgba(21, 10, 174, 0.494);
+}
+
+.footer p {
+    font-family: 'Avenir', sans-serif;
+    font-weight: 600;
+    color: rgb(255, 198, 75);
+    font-size: 16px;
+    padding: 20px;
+    text-align: center;
 }
