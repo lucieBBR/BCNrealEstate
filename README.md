@@ -9,7 +9,23 @@ Please don't share your solution via a public repository.
 
 - Solution:
 
+Home Page
 ![Home Page](./public/home.png)
+
+Leaflet Map with Markers based on CSV file
+![Leaflet Map](./public/leafletMap.png)
+
+Working Filters and PopUp windows with info from CSV file
+![Working Filters](./public/workingFilters.png)
+
+Reset Filters Responsive Button
+![Reset Filters](./public/resetButton.png)
+
+Responsive Links
+![Responsive Links](./public/responsiveLinks.png)
+
+Option to switch to German (only Navbar for now)
+![Language Change](./public/langChange.png)
 
 ## Technologies Used
 
