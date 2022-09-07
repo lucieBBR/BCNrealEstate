@@ -184,7 +184,6 @@ export default function PropertiesMap() {
                 onClick={resetFilters}
                 type="button"
                 id="resetButton"
-                disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
                 >Reset
               </button>
            </form>
