@@ -75,9 +75,11 @@ React and Leaflet boilerplate using Webpack 4
 
 - clone the repository
 
-- run `npm install`
+- cd into the folder
 
-- run `npm run start`
+- run `npm install` in PropertiesApp
+
+- run `npm run start` which will open the App on port 8080
 
 ## Possible Future Features
 
