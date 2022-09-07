@@ -11,7 +11,9 @@ function Navbar() {
   console.log(isEng)
   return (
     <nav className="Navbar">
-      <h1>ZuricHaus</h1>
+      {/* Logo thanks to Canva, Link thanks to Imgur.com */}
+      <img src="https://i.imgur.com/j1eLLaG.png" alt="Logo Zurichaus Real Estate"></img>
+      
       {isEng === true?
       <div className="eng">
         <a href="">HOME</a>

@@ -5,10 +5,14 @@
   }
 
 /* Navbar settings */
-
 .Navbar {
     background-color: rgb(255, 255, 255);
     padding: 20px;
+}
+
+.Navbar img {
+    height: 25%;
+    width: 25%;
 }
 
 .Navbar h1 {
@@ -33,7 +37,7 @@
 
 }
 
-/* Code for links styling thanks to: https://css-tricks.com/css-link-hover-effects/ */
+/* Code for navbar links styling thanks to: https://css-tricks.com/css-link-hover-effects/ */
 .Navbar  a {
     background-image: linear-gradient(
       to right,
@@ -72,10 +76,10 @@
     width:100%;
   }
 
-/* Map Container Settings */
+/* Map Container with Filters Settings */
 
 .MapWithFilters {
-    margin-top: 40px;
+    margin-top: 0px;
     padding-top: 1rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -83,7 +87,6 @@
     grid-auto-rows: 520px;
     justify-content: center;
     background-color: #788da421;
-    /* background-color: rgba(251, 210, 132, 0.662); */
 }
 
 /* Filters */
