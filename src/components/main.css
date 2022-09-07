@@ -116,11 +116,11 @@ h1 {
 /* Map Container with Filters Settings */
 .MapWithFilters {
     margin-top: 0px;
-    padding-top: 2rem;
+    padding-top: 1rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    grid-auto-rows: 600px;
+    grid-auto-rows: 560px;
     justify-content: center;
     background-color: #788da421;
 }
@@ -135,6 +135,7 @@ h1 {
 
 .LeftColumn .Headings {
     /* font-size: 24px; */
+    margin-top: 20px;
     display: inline-flex
 }
 
@@ -211,7 +212,7 @@ h1 {
 
 /* Map */
 .Map{
-    padding: 30px;
+    padding: 0px;
     grid-column-start: 2;
     grid-column-end: 4;
 }
@@ -220,6 +221,7 @@ h1 {
     height: 450px;
     width:100%;
     position: sticky;
+    margin-top: 50px;
 }
 
 
