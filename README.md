@@ -16,7 +16,7 @@ Leaflet Map with Markers based on CSV file
 ![Leaflet Map](./public/leafletMap.png)
 
 Working Filters and PopUp windows with info from CSV file
-![Working Filters](./public/workingFilters.png)
+![Working Filters and PopUps](./public/workingFiltersAndPopUps.png)
 
 Reset Filters Responsive Button
 ![Reset Filters](./public/resetButton.png)
