@@ -3,18 +3,19 @@ import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
 
-const newProperties = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
-const buildingTypeList = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
-const maxPrice = [1000, 2000, 3000, 4000, 5000]
-const filters = {
+const NEW_PROPERTIES = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
+const BUILDING_TYPE_LIST = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
+const MAX_PRICE = [1000, 2000, 3000, 4000, 5000]
+const INIT_FILTERS = {
     buildingType: '',
     price: null,
-    parking: ''
+    parking: null
   }
 
 export default function PropertiesMap() {
-  const [properties, setProperties] = useState(newProperties);
+  const [properties, setProperties] = useState(NEW_PROPERTIES);
   const [filteredProperties, setFilteredProperties] = useState([]);
+  const [filters, setFilters] = useState(INIT_FILTERS)
   const [chosenType, setType] = useState("default");
   const [isChecked, setIsChecked] = useState(false);
   const [price, setPrice] = useState("default");
@@ -23,49 +24,67 @@ export default function PropertiesMap() {
     window.scrollTo(0, 0)
   }, []);
 
+  console.log(properties)
+  console.log(filters)
+
   // handle dropdown menu selection for type of property
   const handleInputChange = (event) => {
     setType(event.target.value);
-    //let filtered = false;
-    // if (filteredProperties.length !== 0) {
-    //    setFilteredProperties(filteredProperties.filter(p => p.BuildingType === event.target.value))
-    //  } else {}
-    //setFilteredProperties(properties.filter(p => p.BuildingType === event.target.value))
     filters.buildingType = event.target.value;
+    setProperties(NEW_PROPERTIES)
 }
   // handle dropdown menu selection for max property price
   const handleMaxPriceChange = (event) => {
     setPrice(event.target.value);
-    //setFilteredProperties(filteredProperties.filter(p => p['Price/m^2'] <= event.target.value))
     filters.price = event.target.value;
+    setProperties(NEW_PROPERTIES)
   };
 
   // handle checkbox changes when Parking checked/unchecked
   const handleCheckboxChange = () => {
     if (isChecked === true) {
         setIsChecked(false)
-        filters.parking = "";
+        filters.parking = null;
+        setProperties(NEW_PROPERTIES)
     } else {
         setIsChecked(true)
         filters.parking = "x";
+        setProperties(NEW_PROPERTIES)
     };
   }
 
   // Submit filters and reset the properties, so the markers would change based on the filters
   const handleSubmit = (event) => {
     event.preventDefault()
-   // if (chosenType !== "default" && price !== "default" && isChecked === true) {
+   if (chosenType !== "default" && price !== "default") {
         let filteredProperties = properties.filter(p =>
-            p.BuildingType === filters.buildingType
-            && p['Price/m^2'] < filters.price
+          p.BuildingType === filters.buildingType
+          && p['Price/m^2'] < filters.price
+          && p.Parking === filters.parking)
+        setProperties(filteredProperties)
+        setFilters(INIT_FILTERS) 
+   } else if (chosenType === "default" && price !== "default") {
+        let filteredProperties = properties.filter(p =>
+            p['Price/m^2'] < filters.price
             && p.Parking === filters.parking)
         setProperties(filteredProperties)
-    
+        setFilters(INIT_FILTERS)
+   } else if (chosenType !== "default" && price === "default") {
+        let filteredProperties = properties.filter(p =>
+            p.BuildingType === filters.buildingType
+            && p.Parking === filters.parking)
+        setProperties(filteredProperties)
+        setFilters(INIT_FILTERS)
+   } else {
+        let filteredProperties = properties.filter(p => p.Parking === filters.parking)
+        setProperties(filteredProperties)
+        setFilters(INIT_FILTERS)
+   }
   }
 
   // Reset filters
   const resetFilters = (event) => {
-    setProperties(newProperties)
+    setProperties(NEW_PROPERTIES)
     setType("default")
     setPrice("default")
     setIsChecked(false)
@@ -96,7 +115,6 @@ export default function PropertiesMap() {
               {/* Select building type  - dropdown menu  */}
               <label htmlFor="select_type">What type of property are you looking for?</label>
               <select
-                required={true}
                 id="select_type"
                 onChange={(e) => handleInputChange(e)}
                 value={chosenType}
@@ -108,7 +126,7 @@ export default function PropertiesMap() {
                 >-- Choose a building type --
                 </option>
                 
-                {buildingTypeList.map((t) => (
+                {BUILDING_TYPE_LIST.map((t) => (
                 <option
                   key={t}
                   className=""
@@ -122,7 +140,6 @@ export default function PropertiesMap() {
               <label htmlFor="selemax_price">What is the maximum price you want to pay? (in €/m&#178;)</label>
               <select
                 className=""
-                required={true}
                 id="max_price"
                 onChange={(e) => handleMaxPriceChange(e)}
                 value={price}
@@ -135,7 +152,7 @@ export default function PropertiesMap() {
                 -- Max price in EUR per square meter  --
                 </option>
                 
-                {maxPrice.map((m) => (
+                {MAX_PRICE.map((m) => (
                 <option
                   key={m}
                   className=""
@@ -145,18 +162,6 @@ export default function PropertiesMap() {
                 </option>
               ))}
               </select>
-
-              {/* <label htmlFor="price">Price</label>
-              <input 
-                type="input"
-                id="price"
-                name="price"
-                // onInput={ handleInput } 
-                onChange={(e) => handleRangeChange(e)}
-                value="25000"
-                min="730" max="4650"
-                step="1"
-              /> */}
              
              {/* Parking option - Checkbox */}
              <label htmlFor="parking">Do you need a parking?</label>
@@ -171,13 +176,14 @@ export default function PropertiesMap() {
              {/* Filter and Reset buttons to submit or reset filters */}
               <button
                 type="submit"
-                disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
+                id="submitButton"
                 >Filter
               </button>
 
               <button
                 onClick={resetFilters}
                 type="button"
+                id="resetButton"
                 disabled = {chosenType === "default" && price === "default" && isChecked === false ? true : false}
                 >Reset
               </button>
@@ -199,20 +205,6 @@ export default function PropertiesMap() {
                 attribution={'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'}
                 url={'https://api.mapbox.com/styles/v1/luciebbr/cl7qjsagm002y15oba7393t3q/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVjaWViYnIiLCJhIjoiY2w3Z2pveHB4MDVieTNubzBnYnFmaWlsOSJ9.3lJjKxP4RT-q_Ush43Vf_g'}
             />
-
-
-              {/* { filteredProperties.length !== 0 ?
-              filteredProperties.map(p => (
-                    <Marker key={p.Coordinates} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
-                        <Popup className="PopUp">
-                            <p>Price: €{p['Price/m^2']}/m&#178;</p>
-                            <p>Building Type: {p.BuildingType}</p>
-                            <p>Parking: {p.Parking === "x"? "YES" : "NO"}</p>
-                            
-                        </Popup>
-                    </Marker>
-                ))
-            : */}
 
             {/* Map through properties and display markers on given coordinates */}
             { properties.map(p => (
