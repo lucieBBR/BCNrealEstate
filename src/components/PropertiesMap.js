@@ -2,6 +2,7 @@ import React, { useState, useLayoutEffect } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Properties from '../properties.csv'
+//import idealistaBCN from '../idealistaBCN.csv'
 
 const NEW_PROPERTIES = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
 const BUILDING_TYPE_LIST = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
@@ -103,7 +104,7 @@ export default function PropertiesMap() {
         <div className="LeftColumn">
           <div className="Headings">
             <h2>Find the ideal property in</h2>
-            <h3>ZURICH</h3>
+            <h3>BARCELONA</h3>
           </div>
           
           <form className="FiltersForm" onSubmit={handleSubmit}>

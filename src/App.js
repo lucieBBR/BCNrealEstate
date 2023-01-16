@@ -14,7 +14,7 @@ class App extends Component {
                 <PropertiesMap />
             </React.Fragment>
             <div className='footer'>
-            <p> Made by Lucie Baborová for Nomoko </p>
+            <p> Made with &#10084; by Lucie Baborová</p>
             </div>
           </div>
         );

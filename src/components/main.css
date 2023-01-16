@@ -15,12 +15,12 @@ html {
     overflow: hidden;
     position: sticky; 
     z-index: 1;
-    top: 0
+    top: 0;
 }
 
 .Navbar img {
-    height: 25%;
-    width: 25%;
+    height: 10%;
+    width: 10%;
 }
 
 .Navbar div {
@@ -88,10 +88,13 @@ html {
 /* Hero/Home Settings */
 /* Background image thanks to Unsplash - Henrique Ferreira */
 .Hero {
-    height: 650px;
+    height: 100vh;
     text-align: center;
-    background-size: contain;
-    background: linear-gradient(rgba(78, 77, 162, 0.72), rgba(84, 85, 104, 0.655)), url('https://images.unsplash.com/photo-1599082323832-2676eca28e86?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2064&q=80');
+    background: linear-gradient(rgba(78, 77, 162, 0.72), rgba(84, 85, 104, 0.655)), url('https://images.unsplash.com/photo-1544918877-460635b6d13e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1476&q=80');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
 }
 
 h1 {
@@ -116,11 +119,11 @@ h1 {
 /* Map Container with Filters Settings */
 .MapWithFilters {
     margin-top: 0px;
-    padding-top: 1rem;
+    padding-top: 150px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
-    grid-auto-rows: 560px;
+    grid-auto-rows: 70vh;
     justify-content: center;
     background-color: #788da421;
 }
@@ -152,7 +155,7 @@ h1 {
 }
 
 .FiltersForm{
-    margin-top: 20px;
+    margin: 0px auto;
     font-size: 16px;
     padding: 2rem 0rem 2rem 2rem;
     display: block;

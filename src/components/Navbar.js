@@ -12,7 +12,7 @@ function Navbar() {
   return (
     <nav className="Navbar">
       {/* Logo thanks to Canva, Link thanks to Imgur.com */}
-      <img src="https://i.imgur.com/j1eLLaG.png" alt="Logo Zurichaus Real Estate"></img>
+      <img src="https://i.imgur.com/jfRaYkj.png" alt="Logo Barcelona Real Estate"></img>
       
       {isEng === true?
       <div className="eng">
@@ -20,14 +20,14 @@ function Navbar() {
         <a href="#mapSection">PROPERTIES</a>
         <a href="">ABOUT US</a>
         <a href="">CONTACT</a>
-        <button className="switchLang" onClick={changeLanguage}>DE</button>
+        <button className="switchLang" onClick={changeLanguage}>ES</button>
       </div>
     :
       <div className="de">
         <a href="#heroSection">HOME</a>
-        <a href="#mapSection">IMMOBILIEN</a>
-        <a href="">ÜBER UNS</a>
-        <a href="">KONTAKT</a>
+        <a href="#mapSection">PROPRIEDADES</a>
+        <a href="">SOBRE NOSOTROS</a>
+        <a href="">CONTACTO</a>
         <button className="switchLang" onClick={changeLanguage}>ENG</button>
       </div>
 }
