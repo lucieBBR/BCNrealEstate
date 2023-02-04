@@ -1,36 +1,32 @@
 # Frontend Map App
 
-- Frontend Map App created as part of recruitment process for Nomoko.
+- Frontend Real Estate Map App
 
-- Instructions:
+- Application done using react, webpack, node.js 
 
-Given a CSV file with locations and prices per square meter, building type and parking availability of properties around Zürich create a map based application that displays markers on the map with the values of this properties and a filtering system for the properties based on it's price, building type and parking. A user should be able to click one of the markers and see the property's information. The application should be done using react, webpack, node.js, sass, application should be done in English and localized for German. General design, UI and UX will be taken into consideration for this task.
-Please don't share your solution via a public repository.
-
-- Solution:
 
 Home Page
-![Home Page](./public/home.png)
+![Home Page](./public/BCNhome.png)
 
 Leaflet Map with Markers based on CSV file
-![Leaflet Map](./public/leafletMap.png)
+![Leaflet Map](./public/BCNmap.png)
 
-Working Filters and PopUp windows with info from CSV file
-![Working Filters and PopUps](./public/workingFiltersAndPopUps.png)
+Filters and PopUp windows with info from CSV file
+![Filters](./public/BCNfilters.png)
+![PopUp](./public/BCNpopup.png)
 
-Reset Filters Responsive Button
-![Reset Filters](./public/resetButton.png)
-
-Responsive Links
-![Responsive Links](./public/responsiveLinks.png)
-
-Option to switch to German (only Navbar for now)
-![Language Change](./public/langChange.png)
+Menu
+![Links](./public/BCNmenu.png)
+![Language Change](./public/BCNes.png)
 
 ## Technologies Used
 
 ### react-leaflet-webpack-boilerplate
-React and Leaflet boilerplate using Webpack 4
+React and Leaflet boilerplate using Webpack 4 (see License)
+
+### Data & Data Scraping
+![Web Automation tool for scraping data from Idealista.com](https://webautomation.io/)
+![Real Estate Data](https://www.idealista.com/)
 
 ### Main Node Modules
 
@@ -60,7 +56,7 @@ React and Leaflet boilerplate using Webpack 4
 
 - CSS:
 
-`mini-css-extract-plugin` (currently this is more friendly than `extract-text-webpack-plugin` for webpack 4): it extracts css which is in style tag of html file into a separated text file like bundle.css
+`mini-css-extract-plugin` : it extracts css which is in style tag of html file into a separated text file like bundle.css
 
 `style-loader` `css-loader`: these get css code and put css code within the style tag of html file
 
@@ -77,18 +73,6 @@ React and Leaflet boilerplate using Webpack 4
 
 - cd into the folder
 
-- run `npm install` in PropertiesApp
+- run `npm install` in BarcelonaRealEstate
 
 - run `npm run start` which will open the App on port 8080
-
-## Possible Future Features
-
-- Due to compatibility issues I did not manage to use SASS in this project, therefore this could be fixed;
-
-- Responsivity;
-
-- Localization for the whole app - for now only works change of language for Navbar;
-
-- Option to switch to different map styles;
-
-- Improvement of filters - better styling and price range slider for setting up min and max price;

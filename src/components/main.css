@@ -19,13 +19,14 @@ html {
 }
 
 .Navbar img {
-    height: 10%;
-    width: 10%;
+    height: 20%;
+    width: 20%;
 }
 
 .Navbar div {
     float: right;
-    font-size: 18px;
+    margin-top: 30px;
+    font-size: 24px;
     justify-content: space-between;
 }
 

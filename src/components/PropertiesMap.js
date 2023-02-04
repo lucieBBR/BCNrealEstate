@@ -1,16 +1,15 @@
 import React, { useState, useLayoutEffect } from 'react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import Properties from '../properties.csv'
-//import idealistaBCN from '../idealistaBCN.csv'
+import idealistaBCN from '../idealistaBCN.csv'
 
-const NEW_PROPERTIES = Properties.map((item, i) => Object.assign(item, {id: i + 1}))
-const BUILDING_TYPE_LIST = ["Residential", "Industrial", "Offices", "Commercial", "Mixed use"];
-const MAX_PRICE = [1000, 2000, 3000, 4000, 5000]
+const NEW_PROPERTIES = idealistaBCN.map((item, i) => Object.assign(item, {id: i + 1}))
+const BUILDING_TYPE_LIST = ["Flat", "Office", "Commercial"];
+const MAX_PRICE = [1000, 2000, 3000, 4000, 5000, 6000, 7000]
 const INIT_FILTERS = {
-    buildingType: '',
+    buildingType: "",
     price: null,
-    parking: null
+    parking: "No"
   }
 
 export default function PropertiesMap() {
@@ -20,6 +19,15 @@ export default function PropertiesMap() {
   const [isChecked, setIsChecked] = useState(false);
   const [price, setPrice] = useState("default");
  
+// console.log("result", properties.filter(p =>
+//   p.BuildingType === "Office"
+//   && Number(p['Price/m^2']) < 5000
+//   && p.Parking === "Yes"))
+// const mynum = "1.345"
+// console.log("test", mynum.split(".").join(""))
+//console.log(((2.900 ).toString()).split(".").join(""))
+//console.log("price", properties.map(p => p.PriceForSqMeter))
+
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
   }, []);
@@ -33,7 +41,7 @@ export default function PropertiesMap() {
   // handle dropdown menu selection for max property price
   const handleMaxPriceChange = (event) => {
     setPrice(event.target.value);
-    filters.price = event.target.value;
+    filters.price = Number(event.target.value);
     setProperties(NEW_PROPERTIES)
   };
 
@@ -41,11 +49,11 @@ export default function PropertiesMap() {
   const handleCheckboxChange = () => {
     if (isChecked === true) {
         setIsChecked(false)
-        filters.parking = null;
+        filters.parking = "No";
         setProperties(NEW_PROPERTIES)
     } else {
         setIsChecked(true)
-        filters.parking = "x";
+        filters.parking = "Yes";
         setProperties(NEW_PROPERTIES)
     };
   }
@@ -56,25 +64,33 @@ export default function PropertiesMap() {
    if (chosenType !== "default" && price !== "default") {
         let filteredProperties = properties.filter(p =>
           p.BuildingType === filters.buildingType
-          && p['Price/m^2'] < filters.price
+          && Number(((p.PriceForSqMeter).toString()).split(".").join("")) < filters.price
           && p.Parking === filters.parking)
         setProperties(filteredProperties)
+        console.log(filters)
+        console.log(filteredProperties)
         setFilters(INIT_FILTERS) 
    } else if (chosenType === "default" && price !== "default") {
         let filteredProperties = properties.filter(p =>
-            p['Price/m^2'] < filters.price
+          Number(((p.PriceForSqMeter).toString()).split(".").join("")) < filters.price
             && p.Parking === filters.parking)
         setProperties(filteredProperties)
+        console.log(filters)
+        console.log(filteredProperties)
         setFilters(INIT_FILTERS)
    } else if (chosenType !== "default" && price === "default") {
         let filteredProperties = properties.filter(p =>
             p.BuildingType === filters.buildingType
             && p.Parking === filters.parking)
         setProperties(filteredProperties)
+        console.log(filters)
+        console.log(filteredProperties)
         setFilters(INIT_FILTERS)
    } else {
         let filteredProperties = properties.filter(p => p.Parking === filters.parking)
         setProperties(filteredProperties)
+        console.log(filters)
+        console.log(filteredProperties)
         setFilters(INIT_FILTERS)
    }
   }
@@ -194,7 +210,7 @@ export default function PropertiesMap() {
         <div className='Map'>
             {/* Show Map at coordinates: center and with given zoom */}
             <Map
-              center={[47.3715, 8.5423]}
+              center={[41.390205, 2.154007]}
               zoom={13}
             >
             
@@ -206,11 +222,12 @@ export default function PropertiesMap() {
 
             {/* Map through properties and display markers on given coordinates */}
             { properties.map(p => (
-            <Marker key={p.id} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
+            // <Marker key={p.id} position={p.Coordinates.replace(/[^0-9\.\s]/g,"").split(" ").map(Number)} icon={blueMarker}>
+            <Marker key={p.id} position={[p.Latitude, p.Longitude]} icon={blueMarker}>
                     <Popup className="PopUp">
-                        <p>Price: €{p['Price/m^2']}/m&#178;</p>
+                        <p>Price: €{p.PriceForSqMeter}/m&#178;</p>
                         <p>Building Type: {p.BuildingType}</p>
-                        <p>Parking: {p.Parking === "x"? "YES" : "NO"}</p>
+                        <p>Parking: {p.Parking === "Yes"? "YES" : "NO"}</p>
                         
                     </Popup>
                 </Marker>
